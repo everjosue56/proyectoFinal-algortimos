@@ -1,0 +1,96 @@
+/* Estilos para la barra de navegación */
+.navbar {
+    background-color: #0f08d9;
+    color: #5905d756;
+    padding: 10px 0;
+  }
+ 
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #500079;
+  }
+
+  .navbar ul li {
+    display: inline;
+    margin-right: 10px;
+    margin-left: 20px;
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 5px 5px;
+      padding-top: 20px;  
+      border-right: 0px solid rgb(13, 0, 255);
+  }
+
+  .navbar ul li:last-child {
+    margin-right: 0;
+    border-right: none;
+  }
+
+  .navbar ul li a {
+    color: #f1f0f0;
+    text-decoration: none;
+    margin-left: 20px;
+    margin-right: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 22px;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .navbar ul li a:hover {
+    border-bottom-color: black; 
+  }
+
+  .retro-icon{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+ 
+
+  /* estilos para el cuerpo de la pagina */
+  body{
+    background-color: #1c0129;
+    color: #f1f0f0;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  h1{
+    text-align: center;
+    margin-right: 100px;
+  }
+
+  /* Estilos para las instrucciones */
+
+  .instru ul li h2{
+  font-size: 30px;
+  }
+  .instru p{
+    font-size: 20px;
+    }
+ 
+.contenedor{
+  background-color: rgb(55, 1, 113);
+  margin: 50px 100px 50px 100px;
+  padding: 20px;
+
+}
+
+.instru{
+  margin: 10px 10px 20px 10px;
+}
+ 
+
+.sspam{
+  font-size: 25px;
+    color: white;
+    padding: 0px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    margin-right: 50px;
+
+ }
