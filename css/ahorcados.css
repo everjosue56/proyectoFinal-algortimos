@@ -63,3 +63,81 @@
     color: #f1f0f0;
     font-family: 'Times New Roman', Times, serif;
   }
+
+  .contenedor{
+    display: flex;
+    margin-left: 100px;
+    margin-left: 100px;
+  }
+
+  .imagen img{
+    width: 400px;
+    height: 500px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    margin-right: 30px;
+    margin-top: 30px;
+
+  }
+
+  .imagen {
+    background-color: rgb(69, 0, 142);
+    margin-left: 200px;
+  }
+
+  .card{
+    background-color: rgb(69, 0, 142);
+    width: 450px;
+    height: 600px;
+   margin-left: 80px;
+  
+  }
+ 
+  .card h2{
+      color:white;
+      margin-left: 40px;
+      margin-top: 40px;
+      margin-right: 30px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 30px;
+
+  }
+
+  .card p{
+    color:white;
+    margin: 10px 50px 30px 50px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .card input{
+    color:#1c0129;
+    margin: 10px 10px 30px 35px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+  }
+
+  .card button{
+    color:white;
+    background-color: #1c0129;
+    margin-left: 125px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+  }
+   
+  h1{
+    margin-left: 550px;
+    font-family: 'Times New Roman', Times, serif;
+    color: white;
+    
+  }
+
+  .sspam{
+    font-size: 25px;
+    color: white;
+    padding: 0px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+    margin-right: 50px;
+  }
