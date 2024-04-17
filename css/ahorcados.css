@@ -70,20 +70,22 @@
     margin-left: 100px;
   }
 
-  .imagen img{
+   .imagen img{
     width: 400px;
     height: 500px;
     margin-left: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     margin-right: 30px;
-    margin-top: 30px;
+    margin-top: 50px;
 
   }
 
   .imagen {
     background-color: rgb(69, 0, 142);
     margin-left: 200px;
-  }
+  } 
+
+
 
   .card{
     background-color: rgb(69, 0, 142);
@@ -132,6 +134,17 @@
     color: white;
     
   }
+  .ganaste {
+    background-color: #1c0129;
+    color: rgb(246, 254, 246); /* Cambia el color del texto a verde */
+    font-size: 40px; /* Cambia el tamaño de la fuente a 24 píxeles */
+    margin-left: 100px;
+    margin-top: 50px;
+    margin-right: 90px;
+    padding: 60px;
+    padding-left: 10px;
+    
+}
 
   .sspam{
     font-size: 25px;
@@ -141,3 +154,5 @@
     text-align: center;
     margin-right: 50px;
   }
+
+  

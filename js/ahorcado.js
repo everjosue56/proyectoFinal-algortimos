@@ -1,3 +1,4 @@
+let indiceimg
 const palabrasAdivinar = [
     'casa',
     'carro',
@@ -12,17 +13,20 @@ const palabrasAdivinar = [
 ]
 
 const imagenMunieco = [
-    'ahorcado 0.png',
-    'ahorcado 1.png',
-    'ahorcado 2.png',
-    'ahorcado 3.png',
-    'ahorcado 4.png',
-    'ahorcado 5.png',
-    'ahorcado 6.png',
+    'ahorcado0.png',
+    'ahorcado1.png',
+    'ahorcado2.png',
+    'ahorcado3.png',
+    'ahorcado4.png',
+    'ahorcado5.png',
+    'ahorcado6.png',
 
 ]
 
- 
+let contadorError = 0
+let numeroOportunidades = 6;
+
+
 const palabraSecreta = palabrasAdivinar[Math.floor(Math.random()*palabrasAdivinar.length)]
 let palabraEscondida = palabraSecreta.replace(/./g,"_ ")
 document.querySelector('.palabraEscondida').innerHTML = palabraEscondida
@@ -36,25 +40,64 @@ const reemplazar = (String, character, index) => {
 // index: El índice en la cadena donde se realizará el reemplazo.
 //substring :se utiliza para extraer una parte de una cadena y devuelve la parte extraída como una nueva cadena
 }
-
-alert(palabraSecreta)
-const evaluateWord = () => {
-    const letra = document.querySelector('input').value
-    let error = true
-     
-    for(let i = 0; i <palabraEscondida.length;i++){
-           if(palabraSecreta[i] === letra){
-             palabraEscondida = reemplazar(palabraEscondida, letra, i*2)  //remplaza un _ por la letra acertada
-              error  = false
-           }
+ 
+//alert(palabraSecreta)
+const evaluarPalabra = () => {
+    const letra = document.querySelector('input').value;
+    document.querySelector('input').value = '';
+    
+    let acierto = true;
+    for (let i = 0; i < palabraEscondida.length; i++) {
+        if (palabraSecreta[i] === letra) {
+            palabraEscondida = reemplazar(palabraEscondida, letra, i * 2);  // Remplaza un _ por la letra acertada
+            acierto = false;
+        }
     }
-    document.querySelector('.palabraEscondida').innerHTML = palabraEscondida //actualiza palabra escondida
+    
+    document.querySelector('.palabraEscondida').innerHTML = palabraEscondida; // Actualiza palabra escondida
 
-
-    if(!palabraEscondida.includes("_")){
-        alert('has ganado');
+  if(acierto){
+    contadorError++
+    contadorIntentos();
+    cambiarImagen();
+    if(contadorError === 6){
+         document.querySelector('.card').innerHTML = `<h1 class="ganaste"> No haz adivinado la palabra :( La palabra era: ${palabraSecreta}</h1>`
+         const elemtentoganar = document.querySelector('.card');
+         const cargarPagina = document.createElement('button');
+         cargarPagina.textContent = "Jugar de nuevo";
+         cargarPagina.id = 'cargarpagina';
+         cargarPagina.addEventListener('click', function () {
+             location.reload();
+         });
+         elemtentoganar.appendChild(cargarPagina);
     }
+  }
 
+  
+  function contadorIntentos(){
+    const oportunidades = numeroOportunidades - contadorError
+    document.querySelector('.oportunidades').textContent = `Oportunidades restantes: ${oportunidades}`
+    indiceimg = contadorError
+  }
+       
+
+    if (!palabraEscondida.includes("_")) {
+        document.querySelector('.card').innerHTML = '<h1 class="ganaste">Felicidades has adivinado la palabra :D !</h1>'
+        const elemtentoganar = document.querySelector('.card');
+        const cargarPagina = document.createElement('button');
+        cargarPagina.textContent = "Jugar de nuevo";
+        cargarPagina.id = 'cargarpagina';
+        cargarPagina.addEventListener('click', function () {
+            location.reload();
+        });
+        elemtentoganar.appendChild(cargarPagina);
+    } 
+}
+function cambiarImagen(contadorError) {
+const imgElemento = document.getElementById('ahorcadoImg');
+const nuevaImagenSrc = 'img/' + imagenMunieco[indiceimg]
+    imgElemento.src = nuevaImagenSrc;
 
 }
-document.querySelector('button').addEventListener ('click', evaluateWord) //comparar letra por letra de la palabra ingresada con la palabra oculta
+
+document.querySelector('button').addEventListener ('click', evaluarPalabra) //comparar letra por letra de la palabra ingresada con la palabra oculta
