@@ -1,3 +1,4 @@
+ 
 let indiceimg
 const palabrasAdivinar = [
     'casa',
@@ -51,8 +52,25 @@ const evaluarPalabra = () => {
         if (palabraSecreta[i] === letra) {
             palabraEscondida = reemplazar(palabraEscondida, letra, i * 2);  // Remplaza un _ por la letra acertada
             acierto = false;
+            const sonidoAdivino = new Audio('palabraadivinada.mp3')
+            sonidoAdivino.play();
         }
     }
+
+
+// function darPista() {
+    
+//     let indice;
+//     do {
+//         indice = Math.floor(Math.random() * palabraEscondida.length);
+//     } while (palabraEscondida[indice] !== '_');
+
+//     palabraEscondida = palabraEscondida.substring(0, indice) + palabraSecreta[indice] + palabraEscondida.substring(indice + 1);
+//     document.querySelector('.palabraEscondida').textContent = palabraEscondida;
+//     if (!palabraEscondida.includes('_')) {
+//         botonPista.disabled = true;
+//     }
+// }
     
     document.querySelector('.palabraEscondida').innerHTML = palabraEscondida; // Actualiza palabra escondida
 
@@ -60,7 +78,11 @@ const evaluarPalabra = () => {
     contadorError++
     contadorIntentos();
     cambiarImagen();
+    const sonidoError = new Audio('sonidoerror.mp3')
+    sonidoError.play();
     if(contadorError === 6){
+      
+       
          document.querySelector('.card').innerHTML = `<h1 class="ganaste"> No haz adivinado la palabra :( La palabra era: ${palabraSecreta}</h1>`
          const elemtentoganar = document.querySelector('.card');
          const cargarPagina = document.createElement('button');
@@ -70,7 +92,11 @@ const evaluarPalabra = () => {
              location.reload();
          });
          elemtentoganar.appendChild(cargarPagina);
-    }
+         const sonidoPerdiste = new Audio('sonidoPerdiste.mp3');
+        sonidoPerdiste.play();
+       
+        
+    } 
   }
 
   
@@ -91,13 +117,15 @@ const evaluarPalabra = () => {
             location.reload();
         });
         elemtentoganar.appendChild(cargarPagina);
+        const sonidoGanaste = new Audio('sonidoganaste.mp3')
+        sonidoGanaste.play();
     } 
 }
 function cambiarImagen(contadorError) {
 const imgElemento = document.getElementById('ahorcadoImg');
 const nuevaImagenSrc = 'img/' + imagenMunieco[indiceimg]
-    imgElemento.src = nuevaImagenSrc;
-
+    imgElemento.src = nuevaImagenSrc;      
+     
 }
 
 document.querySelector('button').addEventListener ('click', evaluarPalabra) //comparar letra por letra de la palabra ingresada con la palabra oculta
