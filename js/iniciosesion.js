@@ -1,7 +1,7 @@
-alert('funciona')
+
 const userAdded = document.querySelector('.nombre-usuario')
 const btnAddUser = document.querySelector('.nuevo-usuario')
-
+const listaUsuarios = document.querySelector('.usuario-existente')
 
 let usuariosData = []
 let usuarios 
@@ -10,28 +10,43 @@ btnAddUser.addEventListener('click', function (){
     
     if(userAdded.value === ''){
         alert('¡Error! - El campo no puede estar Vacío')
-    }
-
-    if(JSON.parse(localStorage.getItem('usuarios'))!== 'undefined' && JSON.parse(localStorage.getItem('usuarios'))){
-        usuarios = JSON.parse(localStorage.getItem('usuarios'))
-        usuariosData = JSON.parse(localStorage.getItem('usuarios'))
-
-        // console.log(usuarios);
-        // console.log(usuarios.id);
-        let id = (usuarios.length) + 1;
-        console.log(id);
-        agregarUsuarios(userAdded,id)
-        // console.log(usuariosData);
-        localStorage.setItem('usuarios', JSON.stringify(usuariosData));
-        
-        alert('Usuario Agregado con Éxito')
-
     }else{
-        let id = 1;
-        agregarUsuarios(userAdded,id)
-        localStorage.setItem('usuarios', JSON.stringify(usuariosData));
-        alert('elemento no encontrado')
+        if(JSON.parse(localStorage.getItem('usuarios'))!== 'undefined' && JSON.parse(localStorage.getItem('usuarios'))){
+            usuarios = JSON.parse(localStorage.getItem('usuarios'))
+            usuariosData = JSON.parse(localStorage.getItem('usuarios'))
+    
+            // console.log(usuarios);
+            // console.log(usuarios.id);
+            let id = (usuarios.length) + 1;
+            console.log(id);
+            for (let i = 0; i < usuariosData.length; i++) {
+                let userName = usuariosData.find(usuario => usuario.userId === (i + 1))
+                let usuarioIngresado = userAdded.value.trim();
+                if (userName.usuario.toLowerCase() === usuarioIngresado.toLowerCase()){
+                    alert('El nombre de usuario ya existe')
+                    return;
+                }
+            }
+            agregarUsuarios(userAdded,id)
+            // console.log(usuariosData);
+            localStorage.setItem('usuarios', JSON.stringify(usuariosData));
+            
+            alert('Usuario Agregado con Éxito')
+           
+                
+            
+    
+        }else{
+            let id = 1;
+            agregarUsuarios(userAdded,id)
+            localStorage.setItem('usuarios', JSON.stringify(usuariosData));
+            alert('Usuario Agregado con Éxito')
+
+        }
+        window.location.href = "juegos.html";
     }
+
+    
 
 });
 
@@ -52,7 +67,7 @@ function agregarUsuarios(userAdded,id){
 }
 
 function lisitarUsuariosExistentes(){
-    const listaUsuarios = document.querySelector('.usuario-existente')
+    
     if(JSON.parse(localStorage.getItem('usuarios'))!== 'undefined' && JSON.parse(localStorage.getItem('usuarios'))){
         usuariosData = JSON.parse(localStorage.getItem('usuarios'))
     }
@@ -73,5 +88,21 @@ function lisitarUsuariosExistentes(){
 }
 
 lisitarUsuariosExistentes(usuariosData)
-usuarios = JSON.parse(localStorage.getItem('usuarios'))
-console.log(usuarios);
+
+listaUsuarios.addEventListener('click', function(){
+    
+    if (listaUsuarios.value != 'default') {
+        usuarios = JSON.parse(localStorage.getItem('usuarios'))
+        
+        for (let i = 0; i < usuarios.length; i++) {
+            
+           if(listaUsuarios.value == usuarios[i].usuario){
+            let id = usuarios[i].userId;
+            localStorage.setItem('idActual',id)
+            window.location.href = "juegos.html";
+           }
+            
+        }
+    }
+    
+});

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const banderasRestantes = document.querySelector('#baderas-restantes')
     const resultado = document.querySelector('#resultado')
     const verPuntuacion = document.querySelector('.valor-puntuacion')
+    const contadorBanderas = document.querySelector('#contador-banderas')
 
     let nDificultad = document.getElementById('dificultad');
     let barraOpciones = document.querySelector('.barra-opciones')
@@ -17,14 +18,33 @@ document.addEventListener('DOMContentLoaded', ()=>{
     let finPartida = false;
     let puntuacion = 0;
     let banderas = 0;
+    let id;
+    let user = [];
+    let usuariosData = []
+    let bonus =  0;
+    let bonusGane = 0;
+    
 
-
+    usuariosData = JSON.parse(localStorage.getItem('usuarios'))
+    id = localStorage.getItem('idActual')
+    // console.log(usuariosData);
+    // console.log(id);
+    let userName = usuariosData.find(usuario => usuario.userId == (id))
+    
+    // console.log(userName);
+    
 
     btnPlay.addEventListener('click',function(){
-        
-        perdio = false;
-    
-       'click',crearTablero()
+        banderas = 0;
+        finPartida   = false;
+        resultado.innerHTML= '';
+        puntuacion = 0;
+        contadorBanderas.hidden = false;
+        verPuntuacion.innerHTML = puntuacion;
+        reset()
+        start();
+        console.log(usuariosData);
+        crearTablero()
         
     })
     // crear el tablero
@@ -41,6 +61,7 @@ function añadirNumeros(ancho) {
             
     
          if(cuadradosPeq[i].classList.contains('valida')){
+            
                 if (i > 0 && !esBordeIzq && cuadradosPeq[i-1].classList.contains('bomb')){
                     total++;
                     
@@ -74,34 +95,7 @@ function añadirNumeros(ancho) {
                     total++;
                 }
                 cuadradosPeq[i].setAttribute('data',total)
-    
-                //  if (i > 0 && !esBordeIzq && cuadradosPeq[i-1].classList.contains('bomb')) total1++;
-                //  console.log(total1);
-                //     // Vemos si hay bomba en la casilla siguiente
-                //  if (i < (ancho*ancho-1) && !esBordeDer && cuadradosPeq[i+1].classList.contains('bomb')) total1++;
-                //  console.log(total1);
-                //     // Vemos si hay bomba en la casilla superior
-                //  if (i > ancho && cuadradosPeq[i-ancho].classList.contains('bomb')) total1++;
-                //  console.log(total1);
-                //  // Vemos si hay bomba en la casilla siguiente de la fila anterior
-                //  if (i > (ancho-1) && !esBordeDer && cuadradosPeq[i+1-ancho].classList.contains('bomb')) total1++;
-                //  console.log(total1);
-                //  // Vemos si hay bomba en la casilla anterior de la fila anterior
-                // if (i > ancho && !esBordeIzq && cuadradosPeq[i-1-ancho].classList.contains('bomb')) total1++;
-                //  console.log(total1);
-                //  // Vemos si hay bomba en la casilla inferior
-                //  if (i < (ancho*(ancho-1)) && cuadradosPeq[i+ancho].classList.contains('bomb')) total1++;
-                //     console.log(total1);
-                //     // Vemos si hay bomba en la casilla siguiente de la fila siguiente
-                //     if (i < (ancho*(ancho-1)) && !esBordeDer && cuadradosPeq[i+1+ancho].classList.contains('bomb')) total1++;
-                //     console.log(total1);
-                //     // Vemos si hay bomba en la casilla anterior de la fila siguiente
-                //     if (i < (ancho*(ancho-1)) && !esBordeIzq && cuadradosPeq[i-1+ancho].classList.contains('bomb')){
-                //         total1++;
-                //     } 
-                    
-                //     // Guardamos el nº de bombas en atributo data
-                //     cuadradosPeq[i].setAttribute('data', total1);
+
                 
     
     
@@ -112,8 +106,9 @@ function añadirNumeros(ancho) {
         } 
 
     function chequearVacios(cuadrado){
+
         const idActual = parseInt(cuadrado.id)
-        console.log(idActual);
+        // console.log(idActual);
         const esBordeIzq = (idActual % ancho === 0)
         const esBordeDer = (idActual % ancho === ancho - 1)
         
@@ -124,6 +119,7 @@ function añadirNumeros(ancho) {
                 
                 const nuevoCuadrado = document.getElementById(nuevoId)
                 click(nuevoCuadrado)
+                
             }
             if(idActual < (ancho*ancho-2) && !esBordeDer){
                 const nuevoId = [parseInt(idActual)  + 1]
@@ -163,18 +159,24 @@ function añadirNumeros(ancho) {
                 click(nuevoCuadrado)
             }
 
-
-
-
+            
+            
+            
         }, 10);
-
-
+        
     }
 
     function FindelJuego() {
+        stop();
+        let sonidoExplosion = new Audio('/sonidosBuscaminas/Explosion.mp3');
+        sonidoExplosion.play();
         resultado.innerHTML= '¡BOOM! Fin del Juego';
         finPartida = true;
-
+        userName.pPerdidasBuscaminas++;
+        
+        // console.log(usuariosData);
+        localStorage.setItem('usuarios', JSON.stringify(usuariosData));
+        
         cuadradosPeq.forEach(function(cuadrado) {
             if (cuadrado.classList.contains('bomb')){
                 cuadrado.innerHTML = '💣'
@@ -187,94 +189,88 @@ function añadirNumeros(ancho) {
 
     }
 
-    function anadirBandera(cuadrado){
+    function anadirBandera(cuadrado,cantidadBombas,bonusGane){
+        
         if (finPartida) return
+
         if (!cuadrado.classList.contains('checked') && (banderas <= cantidadBombas)){
             if (!cuadrado.classList.contains('bandera')){
                 banderas ++;
                 cuadrado.classList.add('bandera')
                 cuadrado.innerHTML = '🚩'
-                banderasRestantes.innerHTML = cantidadBombas- banderas
-                verificarGane();
+                banderasRestantes.innerHTML = cantidadBombas - banderas;
+                verificarGane(bonusGane);
             }else{
                 cuadrado.classList.remove('bandera')
                 banderas--;
                 cuadrado.innerHTML = '';
-                banderasRestantes.innerHTML = cantidadBombas- banderas
+                banderasRestantes.innerHTML = cantidadBombas- banderas;
             }
         }
     }
     
 
-    function verificarGane() {
+    function verificarGane(bonusGane) {
         let igualdad = 0;
         for (let i =0; i < cuadradosPeq.length ; i++){
             if (cuadradosPeq[i].classList.contains('bandera')&& cuadradosPeq[i].classList.contains('bomb')){
                 igualdad++;
             }
             if(igualdad === cantidadBombas){
+                stop();
                 finPartida = true;
-                // var count = 200;
-                // var defaults = {
-                //   origin: { y: 0.7 }
-                // };
+                puntuacion += bonusGane; 
+                console.log(`Esta es el bonus de gane ${puntuacion}`);
+                verPuntuacion.innerHTML = puntuacion;
+                VerificartopScore(puntuacion);
+                userName.pGanadasBuscaminas++;
+                localStorage.setItem('usuarios', JSON.stringify(usuariosData));
                 
-                // function fire(particleRatio, opts) {
-                //   confetti({
-                //     ...defaults,
-                //     ...opts,
-                //     particleCount: Math.floor(count * particleRatio)
-                //   });
-                // }
-                
-                // fire(0.25, {
-                //   spread: 26,
-                //   startVelocity: 75,
-                // });
-                // fire(0.2, {
-                //   spread: 60,
-                // });
-                // fire(0.35, {
-                //   spread: 100,
-                //   decay: 0.91,
-                //   scalar: 0.8
-                // });
-                // fire(0.1, {
-                //   spread: 120,
-                //   startVelocity: 25,
-                //   decay: 0.92,
-                //   scalar: 1.2
-                // });
-                // fire(0.1, {
-                //   spread: 120,
-                //   startVelocity: 15,
-                // });
                 felicitacion();
+                
                 resultado.innerHTML = 'GANÓ'
                 
-                
+                return;
             }
         }
     }
 function felicitacion(){
 
-   confetti();
+    
+    confetti();
+    confetti();
+    let sonidoGane = new Audio('/sonidosBuscaminas/Gano.mp3');
+    sonidoGane.play();
+   
 }
+
+
   
+function VerificartopScore(puntuacion){
+    if (puntuacion > userName.topScore){
+        userName.topScore = puntuacion;
+        console.log(usuariosData);
+        localStorage.setItem('usuarios', JSON.stringify(usuariosData));
+    }
+}
+
     
     function click(cuadrado) {
-        console.log('click');
         
-    //    felicitacion();
+        console.log(`este es el bonus ${bonus}`);
+        let multiplicador = bonus;
+    
 
 
         if (finPartida || cuadrado.classList.contains('checked') || cuadrado.classList.contains('bandera'))return;
 
         if (cuadrado.classList.contains('bomb')){
+
             FindelJuego()
                 
         }else{
-            puntuacion ++;
+            
+            puntuacion = puntuacion + multiplicador;
             let total = cuadrado.getAttribute('data')
             if(total != 0){
                 cuadrado.classList.add('checked')
@@ -286,6 +282,8 @@ function felicitacion(){
                 if (total == 6 ) cuadrado.classList.add('seis')
                 cuadrado.innerHTML = total;
                 verPuntuacion.innerHTML = puntuacion;
+                VerificartopScore(puntuacion);
+                
                 return 
             }
             
@@ -298,7 +296,7 @@ function felicitacion(){
         
     }
 
-
+    
 
 
 function crearTablero() {
@@ -309,19 +307,26 @@ function crearTablero() {
         case "DIFICIL":
             ancho = 7;
             claseDificulatad = "dificil";
-            cantidadBombas = 22;
+            cantidadBombas = 2;
+            bonus = 5;
+            bonusGane = 150;
             finPartida = false;
+
             break;
         case "MEDIO":
             ancho = 9;
             claseDificulatad = "medio";
             cantidadBombas = 20;
+            bonus = 3;
+            bonusGane = 100;
             finPartida = false;
             break;
          case "FACIL":
             ancho = 10; 
             claseDificulatad = "facil";
             cantidadBombas = 15;
+            bonus = 1;
+            bonusGane = 50;
             finPartida = false;
             break;      
     }
@@ -353,15 +358,15 @@ function crearTablero() {
         cuadradosPeq.push(cuadrado)
        
         cuadrado.addEventListener('click', function (){
-                
-            click(cuadrado)
+            
+            click(cuadrado,bonus)
 
         });
 
         cuadrado.addEventListener('contextmenu', function (){
             event.preventDefault();
             console.log('click derecho');
-            anadirBandera(cuadrado);
+            anadirBandera(cuadrado,cantidadBombas,bonusGane);
 
         });
          // Inicia el juego boton de play IMPORTANTE-----
@@ -370,9 +375,47 @@ function crearTablero() {
     añadirNumeros(ancho);
     
 }
-    
-   
-    crearTablero();
+let hr = 0, min = 0, sec = 0, ms = 0;
+let startTimer;
+function start() {
+    btnPlay.classList.add('active');
+    startTimer = setInterval(() => {
+        ms++;
+        if (ms == 100) {
+            sec++;
+            ms = 0;
+        }
+        if (sec == 60) {
+            min++;
+            sec = 0;
+        }
+        if (min == 60) {
+            hr++;
+            min = 0;
+        }
+        putValue();
+    }, 10);
+}
+
+function stop() {
+    btnPlay.classList.remove("active");
+    clearInterval(startTimer);
+}
+
+function reset() {
+    btnPlay.classList.remove("active");
+    clearInterval(startTimer);
+    hr = min = sec = ms = 0;
+    putValue();
+}
+
+function putValue() {
+    document.querySelector('.ms').innerHTML = ms < 10 ? "0" + ms : ms;
+    document.querySelector('.second').innerHTML = sec < 10 ? "0" + sec : sec;
+    document.querySelector('.minute').innerHTML = min < 10 ? "0" + min : min;
+    document.querySelector('.hour').innerHTML = hr < 10 ? "0" + hr : hr;
+}
+    // crearTablero();
            
   
 

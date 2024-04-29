@@ -24,12 +24,14 @@ const imagenMunieco = [
 
 ]
 
+
+
 let contadorError = 0;
 let numeroOportunidades = 6;
 let partidasPerdidas = 0;
 let partidasGanadas = 0;
 let partidasJugadas = 0;
-inicializarPartidas();
+// inicializarPartidas();
  
  
 //remplaza las letras de palabra escondida por guiones  
@@ -211,43 +213,36 @@ document.querySelector('button').addEventListener ('click', evaluarPalabra);
 
 console.log(palabraSecreta);
 
-// Funcion para inicializar los datos de las partidas 
-function inicializarPartidas() {
-    const partidasGuardadas = localStorage.getItem('partidas');
-    if (!partidasGuardadas) {
-        localStorage.setItem('partidas', JSON.stringify({ ganadas: 0, perdidas: 0, jugadas: 0 }));
-    }
-}
 
-// Funcion para guardar los datos de las partidas en localStorage
-function guardarDatosPartidas(ganadas, perdidas, jugadas) {
-    const datosPartidas = { ganadas: ganadas, perdidas: perdidas, jugadas: jugadas };
-    localStorage.setItem('partidas', JSON.stringify(datosPartidas));
-}
 
 // Funcion para obtener los datos de las partidas desde localStorage
 function obtenerDatosPartidas() {
-    return JSON.parse(localStorage.getItem('partidas'));
+    usuariosData = JSON.parse(localStorage.getItem('usuarios'))
+    id = localStorage.getItem('idActual')
+    let user = usuariosData.find(usuario => usuario.userId == (id))
+    return user
 }
 
 // Incrementar el contador de partidas ganadas y partidas perdidass 
 function incrementarPartidasGanadas() {
     const datosPartidas = obtenerDatosPartidas();
-    datosPartidas.ganadas++;
-    datosPartidas.jugadas++;
-    guardarDatosPartidas(datosPartidas.ganadas, datosPartidas.perdidas, datosPartidas.jugadas);
-    console.log('Partidas ganadas:', datosPartidas.ganadas);
-    console.log('partidas jugadas:', datosPartidas.jugadas);
+    datosPartidas.pGanadasAhorcado++;
+    datosPartidas.pJugadas++;
+    // guardarDatosPartidas(datosPartidas.pGanadasAhorcado, datosPartidas.pPerdidasAhorcado, datosPartidas.pJugadas);
+    console.log('Partidas ganadas:', datosPartidas.pGanadasAhorcado);
+    console.log('partidas jugadas:', datosPartidas.pJugadas);
+    localStorage.setItem('usuarios', JSON.stringify(usuariosData));
 }
 
 // Incrementar el contador de partidas perdidas y partidas jugadas
 function incrementarPartidasPerdidas() {
     const datosPartidas = obtenerDatosPartidas();
-    datosPartidas.perdidas++;
-    datosPartidas.jugadas++;
-    guardarDatosPartidas(datosPartidas.ganadas, datosPartidas.perdidas, datosPartidas.jugadas);
-    console.log('Partidas perdidas:', datosPartidas.perdidas);
-    console.log('partidas jugadas:', datosPartidas.jugadas);
+    datosPartidas.pPerdidasAhorcado++;
+    datosPartidas.pJugadas++;
+    // guardarDatosPartidas(datosPartidas.pGanadasAhorcado, datosPartidas.pPerdidasAhorcado, datosPartidas.pJugadas);
+    console.log('Partidas perdidas:',datosPartidas.pPerdidasAhorcado);
+    console.log('partidas jugadas:', datosPartidas.pJugadas);
+    localStorage.setItem('usuarios', JSON.stringify(usuariosData));
 }
  
  
