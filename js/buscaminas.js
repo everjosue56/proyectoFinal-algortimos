@@ -61,43 +61,44 @@ function añadirNumeros(ancho) {
             
     
          if(cuadradosPeq[i].classList.contains('valida')){
-            
+            // Vemos si hay bomba en la casilla anterior (a la izquierda de la que se dio click)
                 if (i > 0 && !esBordeIzq && cuadradosPeq[i-1].classList.contains('bomb')){
                     total++;
                     
                 }
-                
+             // Vemos si hay bomba en la casilla siguiente (a la derecha de la que se hizo click)   
                 if ((i < (ancho*ancho) - 1) && !esBordeDer && cuadradosPeq[i+1].classList.contains('bomb')){
                     total++;
                 }
-    
+            //  Vemos si hay bomba en la casilla superior (la que esta arriba de la que se seleccionó )
                 if ((i > ancho) && cuadradosPeq[i - ancho].classList.contains('bomb')) {
                     total++;
                 }
-    
+            // Vemos si hay bomba en la casilla siguiente de la fila anterior (a la derecha esquina superior)
                 if(i > (ancho - 1) && !esBordeDer && cuadradosPeq[i + 1 - ancho].classList.contains('bomb')){
                     total++;
                 }
-    
+            // Vemos si hay bomba en la casilla anterior de la fila anterior (a la iquierda esquina superior)
     
                 if ((i > ancho ) && !esBordeIzq &&cuadradosPeq[i - ancho - 1].classList.contains('bomb')){
                     total ++;
                 }
-                
+            //  Vemos si hay bomba en la casilla siguiente de la fila siguiente (a la iquierda esquina superior)
                 if((i < (ancho*(ancho-1))) && !esBordeIzq && cuadradosPeq[i-1+ancho].classList.contains('bomb')){
                     console.log('funciona');
                     total++;
                 }
+            // Vemos si hay bomba en la casilla inferior (justo debajo)
                 if ((i < (ancho*(ancho-1)))  && !esBordeDer && cuadradosPeq[i + 1 + ancho].classList.contains('bomb')) {
                     total++;
                 }
+            // Vemos si hay bomba en la casilla siguiente de la fila siguiente (a la derecha esquina inferior)
                 if ((i < (ancho*(ancho-1))) &&cuadradosPeq[i + ancho].classList.contains('bomb')) {
                     total++;
                 }
                 cuadradosPeq[i].setAttribute('data',total)
 
                 
-    
     
                 
                 }
@@ -257,7 +258,7 @@ function VerificartopScore(puntuacion){
     
     function click(cuadrado) {
         
-        console.log(`este es el bonus ${bonus}`);
+        // console.log(`este es el bonus ${bonus}`);
         let multiplicador = bonus;
     
 
@@ -301,7 +302,7 @@ function VerificartopScore(puntuacion){
 
 function crearTablero() {
     
-    console.log(nDificultad.value);
+    // console.log(nDificultad.value);
     switch(nDificultad.value){
         
         case "DIFICIL":
@@ -335,7 +336,7 @@ function crearTablero() {
 
     grid.classList.add(claseDificulatad)
     barraOpciones.classList.add(claseDificulatad)
-    console.log(grid);
+    // console.log(grid);
     
 
     grid.innerHTML = '';
@@ -375,6 +376,7 @@ function crearTablero() {
     añadirNumeros(ancho);
     
 }
+
 let hr = 0, min = 0, sec = 0, ms = 0;
 let startTimer;
 function start() {
